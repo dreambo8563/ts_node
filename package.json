@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./dist/bin/www",
-    "debug": "DEBUG=server:* nodemon ./dist/bin/www"
+    "debug": "DEBUG=server:* tsc && nodemon ./dist/bin/www",
+    "predebug": "tsc"
   },
   "dependencies": {
     "axios": "^0.17.1",
@@ -37,6 +38,7 @@
     "@types/ramda": "^0.25.13",
     "@types/serve-favicon": "^2.2.30",
     "@types/winston": "^2.3.7",
-    "nodemon": "^1.14.3"
+    "nodemon": "^1.14.3",
+    "typescript": "^2.6.2"
   }
 }

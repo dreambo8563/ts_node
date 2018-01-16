@@ -4,3 +4,7 @@ node_modules
 # logs
 npm-debug.log
 
+# dist
+dist
+.vscode
+.DS_Store
