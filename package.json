@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node_modules/.bin/tsc && node ./dist/bin/www",
+    "start": "node ./dist/bin/www",
     "debug": "DEBUG=server:* node_modules/.bin/tsc && nodemon ./dist/bin/www",
     "predebug": "node_modules/.bin/tsc",
     "prestart": "node_modules/.bin/tsc"
