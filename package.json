@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "tsc && node ./dist/bin/www",
-    "debug": "DEBUG=server:* tsc && nodemon ./dist/bin/www",
-    "predebug": "tsc",
-    "prestart": "tsc"
+    "start": "node_modules/.bin/tsc && node ./dist/bin/www",
+    "debug": "DEBUG=server:* node_modules/.bin/tsc && nodemon ./dist/bin/www",
+    "predebug": "node_modules/.bin/tsc",
+    "prestart": "node_modules/.bin/tsc"
   },
   "dependencies": {
     "axios": "^0.17.1",
