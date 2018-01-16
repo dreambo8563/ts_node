@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  ts_node_dev:
+    build:
+      context: .
+      dockerfile: Dockerfile-development
+    links:
+      - db
+    environment:
+      NODE_ENV: development
+    ports:
+      - 8192:8192
+    volumes:
+      - ".:/usr/src/app"
+  db:
+    image:  mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: typeorm
+    ports:
+      - 3306:3306
+    volumes:
+      - "./initSql:/docker-entrypoint-initdb.d"

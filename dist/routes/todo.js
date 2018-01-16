@@ -10,15 +10,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const Response = require("../utils/response");
-const Todo_1 = require("../controllers/Todo");
+const todo_1 = require("../controllers/todo");
 const R = require("ramda");
 const router = express.Router();
 router.post("/", (req, res) => __awaiter(this, void 0, void 0, function* () {
     let todoItem;
     try {
-        todoItem = new Todo_1.Todo(req.body.name, req.body.description);
+        todoItem = new todo_1.Todo(req.body.name, req.body.description);
         // save it to db
-        yield Todo_1.Todo.createToDo(todoItem);
+        yield todo_1.Todo.createToDo(todoItem);
+        // Response.respondJSON(res, false, { test: "testmsg" })
         Response.respondJSON(res, true, todoItem);
     }
     catch (error) {
@@ -29,7 +30,7 @@ router.put("/", (req, res) => __awaiter(this, void 0, void 0, function* () {
     let todoItem = req.body;
     // modify todo info
     try {
-        yield Todo_1.Todo.updateToDo(todoItem);
+        yield todo_1.Todo.updateToDo(todoItem);
         Response.respondJSON(res, true, todoItem);
     }
     catch (error) {
@@ -40,7 +41,7 @@ router.put("/", (req, res) => __awaiter(this, void 0, void 0, function* () {
 router.delete("/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        yield Todo_1.Todo.delToDo(id);
+        yield todo_1.Todo.delToDo(id);
         Response.respondJSON(res, true, { id });
     }
     catch (error) {
@@ -51,7 +52,7 @@ router.delete("/:id", (req, res) => __awaiter(this, void 0, void 0, function* ()
 router.get("/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        let todoArr = yield Todo_1.Todo.getToDo(id);
+        let todoArr = yield todo_1.Todo.getToDo(id);
         Response.respondJSON(res, true, R.head(todoArr) || []);
     }
     catch (error) {
@@ -62,7 +63,7 @@ router.get("/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
 router.get("/", (req, res) => __awaiter(this, void 0, void 0, function* () {
     // search by query
     try {
-        let todoArr = yield Todo_1.Todo.getTodos(req.query);
+        let todoArr = yield todo_1.Todo.getTodos(req.query);
         Response.respondJSON(res, true, todoArr);
     }
     catch (error) {
@@ -73,8 +74,8 @@ router.get("/", (req, res) => __awaiter(this, void 0, void 0, function* () {
 router.post("/batch", (req, res) => __awaiter(this, void 0, void 0, function* () {
     let todoCol;
     try {
-        todoCol = req.body.list.map(v => new Todo_1.Todo(v.name, v.description));
-        const ids = yield Todo_1.Todo.batchAdd(todoCol);
+        todoCol = req.body.list.map(v => new todo_1.Todo(v.name, v.description));
+        const ids = yield todo_1.Todo.batchAdd(todoCol);
         Response.respondJSON(res, true, { ids });
     }
     catch (error) {
@@ -84,7 +85,7 @@ router.post("/batch", (req, res) => __awaiter(this, void 0, void 0, function* ()
 router.put("/batch", (req, res) => __awaiter(this, void 0, void 0, function* () {
     let todoCol = req.body.list;
     try {
-        const list = yield Todo_1.Todo.batchUpdate(todoCol);
+        const list = yield todo_1.Todo.batchUpdate(todoCol);
         Response.respondJSON(res, true, { list });
     }
     catch (error) {
@@ -94,7 +95,7 @@ router.put("/batch", (req, res) => __awaiter(this, void 0, void 0, function* () 
 router.delete("/batch", (req, res) => __awaiter(this, void 0, void 0, function* () {
     let ids = req.body.list;
     try {
-        const list = yield Todo_1.Todo.batchDel(ids);
+        const list = yield todo_1.Todo.batchDel(ids);
         Response.respondJSON(res, true, { list });
     }
     catch (error) {

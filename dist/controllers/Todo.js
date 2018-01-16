@@ -17,7 +17,7 @@ class Todo {
     }
     validate(name, desc) {
         if (!name) {
-            throw Error("please input name11");
+            throw Error("please input name");
         }
         if (!desc) {
             throw Error("please input desc");
@@ -80,4 +80,4 @@ class Todo {
     }
 }
 exports.Todo = Todo;
-//# sourceMappingURL=Todo.js.map
+//# sourceMappingURL=todo.js.map

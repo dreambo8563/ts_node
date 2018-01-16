@@ -2,6 +2,7 @@ import * as express from "express"
 import * as Response from "../utils/response"
 import { Todo } from "../controllers/todo"
 import * as R from "ramda"
+import { respondJSON } from "../utils/response"
 
 const router = express.Router()
 
@@ -11,6 +12,7 @@ router.post("/", async (req, res) => {
     todoItem = new Todo(req.body.name, req.body.description)
     // save it to db
     await Todo.createToDo(todoItem)
+    // Response.respondJSON(res, false, { test: "testmsg" })
     Response.respondJSON(res, true, todoItem)
   } catch (error) {
     Response.respondJSON(res, false, error.message)
