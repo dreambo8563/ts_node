@@ -1,0 +1,7 @@
+{
+  "apps": [{
+    "name": "wxa-sockets-test",
+    "script": "./dist/bin/www.js",
+    "args": ""
+  }]
+}

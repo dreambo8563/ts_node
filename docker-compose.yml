@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  ts_node:
+    build: .
+    links:
+      - db
+    environment:
+      NODE_ENV: production
+    ports:
+      - 8192:8192
+  db:
+    image:  mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: typeorm
+    ports:
+      - 3306:3306
+    volumes:
+      - "./initSql:/docker-entrypoint-initdb.d"
