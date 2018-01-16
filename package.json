@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node ./dist/bin/www",
+    "start": "tsc && node ./dist/bin/www",
     "debug": "DEBUG=server:* tsc && nodemon ./dist/bin/www",
-    "predebug": "tsc"
+    "predebug": "tsc",
+    "prestart": "tsc"
   },
   "dependencies": {
     "axios": "^0.17.1",
