@@ -7,6 +7,11 @@ import * as cookieParser from "cookie-parser"
 import * as bodyParser from "body-parser"
 import { rootDir } from "../config/"
 import routes from "../routes"
+import * as session from "express-session"
+import * as connectRedis from "connect-redis"
+const RedisStore = connectRedis(session)
+import { config as redisConfig } from "../redis/config"
+
 const app = express()
 
 // view engine setup
@@ -19,6 +24,19 @@ app.use(logger("dev"))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
+app.use(
+  session({
+    name: redisConfig.name,
+    secret: redisConfig.secret,
+    resave: true,
+    saveUninitialized: true,
+    cookie: redisConfig.cookie,
+    store: new RedisStore({
+      host: redisConfig.host,
+      port: redisConfig.port
+    })
+  })
+)
 app.use(express.static(path.join(rootDir(), "public")))
 
 // router bind

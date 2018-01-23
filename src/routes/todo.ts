@@ -3,6 +3,7 @@ import * as Response from "../utils/response"
 import { Todo } from "../controllers/todo"
 import * as R from "ramda"
 import { respondJSON } from "../utils/response"
+import redis from "../redis"
 
 const router = express.Router()
 
@@ -11,8 +12,10 @@ router.post("/", async (req, res) => {
   try {
     todoItem = new Todo(req.body.name, req.body.description)
     // save it to db
-    await Todo.createToDo(todoItem)
+    const ids = await Todo.createToDo(todoItem)
     // Response.respondJSON(res, false, { test: "testmsg" })
+    // await redis.set("todo", R.head(ids).toString(), todoItem.name)
+    await redis.multiSet(`todo:${R.head(ids)}`, Object({ name: todoItem.name }))
     Response.respondJSON(res, true, todoItem)
   } catch (error) {
     Response.respondJSON(res, false, error.message)
@@ -31,11 +34,22 @@ router.put("/", async (req, res) => {
     Response.respondJSON(res, false, error.message)
   }
 })
+router.delete("/batch", async (req, res) => {
+  let ids: number[] = req.body.list
+  try {
+    const list = await Todo.batchDel(ids)
+    console.log("batch del", list)
+    Response.respondJSON(res, true, { list })
+  } catch (error) {
+    Response.respondJSON(res, false, error.message)
+  }
+})
 
 router.delete("/:id", async (req, res) => {
   const id = req.params.id
   try {
     await Todo.delToDo(id)
+    redis.delete("todo", `${id}:name`)
     Response.respondJSON(res, true, { id })
   } catch (error) {
     // error on del
@@ -46,6 +60,8 @@ router.delete("/:id", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const id = req.params.id
   try {
+    const names = await redis.multiGet("todo", ["1:name", "2:name", "3:name"])
+    console.log("names", names)
     let todoArr: Todo[] = await Todo.getToDo(id)
     Response.respondJSON(res, true, R.head(todoArr) || [])
   } catch (error) {
@@ -79,16 +95,6 @@ router.put("/batch", async (req, res) => {
   let todoCol: Todo[] = req.body.list
   try {
     const list = await Todo.batchUpdate(todoCol)
-    Response.respondJSON(res, true, { list })
-  } catch (error) {
-    Response.respondJSON(res, false, error.message)
-  }
-})
-
-router.delete("/batch", async (req, res) => {
-  let ids: number[] = req.body.list
-  try {
-    const list = await Todo.batchDel(ids)
     Response.respondJSON(res, true, { list })
   } catch (error) {
     Response.respondJSON(res, false, error.message)
