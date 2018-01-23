@@ -9,9 +9,19 @@ export class RedisController {
     this.keyTitle = keyTitle
     this.redis = redis
   }
-  async set(module: string, key: string, value: any) {
+  async set(module: string, key: string, value: any): Promise<any>
+  async set(
+    module: string,
+    key: string,
+    value: any,
+    expire: number
+  ): Promise<any>
+  async set(module: string, key: string, value: any, expire?: number) {
     try {
       const keyPath = `${this.keyTitle}:${module}:${key}`
+      if (typeof expire === "number") {
+        return await this.redis.setex(keyPath, expire, JSON.stringify(value))
+      }
       return await this.redis.set(keyPath, JSON.stringify(value))
     } catch (e) {
       Logger.error("error when save redis , error info is :%", e)
@@ -26,7 +36,7 @@ export class RedisController {
       }
       return JSON.parse(value)
     } catch (e) {
-      Logger.error("error when read redis , error info is :%", e)
+      Logger.error("error when read redis , error info is :%", e, key)
     }
   }
 
@@ -41,13 +51,28 @@ export class RedisController {
       const toBeSavedObj: string[] = []
       Object.keys(value).forEach(key => {
         const keyPath = `${this.keyTitle}:${module}:${key}`
-        toBeSavedObj.push(keyPath)
-        toBeSavedObj.push(JSON.stringify(value[key]))
+        toBeSavedObj.push(keyPath, JSON.stringify(value[key]))
+        // toBeSavedObj.push(JSON.stringify(value[key]))
       })
       const [a, b, ...arr] = toBeSavedObj
       return await this.redis.mset(a, b, ...arr)
     } catch (e) {
-      Logger.error("error when multi save redis , error info is :%", e)
+      Logger.error("error when multiSet  redis , error info is :%", e, value)
+    }
+  }
+  async multHashSet(
+    module: string,
+    hash: string,
+    value: { [key: string]: string }
+  ) {
+    try {
+      if (Object.keys(value).length < 1) {
+        throw new Error("multHashSet  at least have one key")
+      }
+      const keyPath = `${this.keyTitle}:${module}:${hash}`
+      return await this.redis.hmset(keyPath, value)
+    } catch (e) {
+      Logger.error("error when multHashSet  redis , error info is :%", e, value)
     }
   }
 
@@ -78,7 +103,7 @@ export class RedisController {
       })
       return result
     } catch (e) {
-      Logger.error("error when multi read redis , error info is :%", e)
+      Logger.error("error when multi read redis , error info is :%", e, key)
     }
   }
   async delete(module: string, key: string) {
@@ -87,7 +112,7 @@ export class RedisController {
       console.log(keyPath, "del")
       return await this.redis.del(keyPath)
     } catch (e) {
-      Logger.error("error when delete redis , error info is :%", e)
+      Logger.error("error when delete redis , error info is :%", e, key)
     }
   }
 }

@@ -14,8 +14,9 @@ router.post("/", async (req, res) => {
     // save it to db
     const ids = await Todo.createToDo(todoItem)
     // Response.respondJSON(res, false, { test: "testmsg" })
-    // await redis.set("todo", R.head(ids).toString(), todoItem.name)
-    await redis.multiSet(`todo:${R.head(ids)}`, Object({ name: todoItem.name }))
+    // await redis.set("todo", R.head(ids).toString(), todoItem.name, 60)
+    // await redis.multiSet(`todo:${R.head(ids)}`, Object({ name: todoItem.name }))
+    await redis.multHashSet("todo", String(R.head(ids)), Object(todoItem))
     Response.respondJSON(res, true, todoItem)
   } catch (error) {
     Response.respondJSON(res, false, error.message)
