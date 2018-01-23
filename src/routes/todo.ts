@@ -9,6 +9,7 @@ const router = express.Router()
 
 router.post("/", async (req, res) => {
   let todoItem: Todo
+  console.log(req.session)
   try {
     todoItem = new Todo(req.body.name, req.body.description)
     // save it to db

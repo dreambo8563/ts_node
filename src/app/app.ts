@@ -9,9 +9,14 @@ import { rootDir } from "../config/"
 import routes from "../routes"
 import * as session from "express-session"
 import * as connectRedis from "connect-redis"
-const RedisStore = connectRedis(session)
+import * as Redis from "ioredis"
 import { config as redisConfig } from "../redis/config"
 
+// create the client because of the issue
+// https://stackoverflow.com/search?q=docker+redis+express+session
+// https://github.com/luin/ioredis/issues/568
+const RedisStore = connectRedis(session)
+const redisClient = new Redis(redisConfig.port, redisConfig.host)
 const app = express()
 
 // view engine setup
@@ -23,23 +28,28 @@ app.use(favicon(path.join(rootDir(), "public", "favicon.png")))
 app.use(logger("dev"))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(cookieParser())
+app.use(cookieParser(redisConfig.secret))
 app.use(
   session({
     name: redisConfig.name,
     secret: redisConfig.secret,
-    resave: true,
     saveUninitialized: true,
+    resave: true,
     cookie: redisConfig.cookie,
+    // @ts-ignore
     store: new RedisStore({
-      host: redisConfig.host,
-      port: redisConfig.port
+      client: redisClient
     })
   })
 )
 app.use(express.static(path.join(rootDir(), "public")))
 
 // router bind
+app.use("/", function(req, res, next) {
+  if (req.session.pageCount) req.session.pageCount++
+  else req.session.pageCount = 1
+  res.render("index", { title: JSON.stringify(req.session) })
+})
 app.use("/api", routes.api)
 app.use("/debug", routes.debug)
 app.use("/tencent", routes.tencent)
