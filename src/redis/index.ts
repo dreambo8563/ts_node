@@ -109,7 +109,7 @@ export class RedisController {
   async delete(module: string, key: string) {
     try {
       const keyPath = `${this.keyTitle}:${module}:${key}`
-      console.log(keyPath, "del")
+      // console.log(keyPath, "del")
       return await this.redis.del(keyPath)
     } catch (e) {
       Logger.error("error when delete redis , error info is :%", e, key)
