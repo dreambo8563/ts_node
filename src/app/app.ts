@@ -11,12 +11,13 @@ import * as session from "express-session"
 import * as connectRedis from "connect-redis"
 import * as Redis from "ioredis"
 import { config as redisConfig } from "../redis/config"
+import { redis } from "../redis"
 
 // create the client because of the issue
 // https://stackoverflow.com/search?q=docker+redis+express+session
 // https://github.com/luin/ioredis/issues/568
 const RedisStore = connectRedis(session)
-const redisClient = new Redis(redisConfig.port, redisConfig.host)
+// const redisClient = new Redis(redisConfig.port, redisConfig.host)
 const app = express()
 
 // view engine setup
@@ -38,7 +39,7 @@ app.use(
     cookie: redisConfig.cookie,
     // @ts-ignore
     store: new RedisStore({
-      client: redisClient
+      client: redis
     })
   })
 )

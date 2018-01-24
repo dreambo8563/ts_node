@@ -116,7 +116,5 @@ export class RedisController {
     }
   }
 }
-export default new RedisController(
-  new Redis(config.port, config.host),
-  "node_server"
-)
+export const redis = new Redis(config.port, config.host)
+export default new RedisController(redis, "node_server")
