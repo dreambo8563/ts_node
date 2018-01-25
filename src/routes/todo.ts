@@ -4,6 +4,7 @@ import { Todo } from "../controllers/todo"
 import * as R from "ramda"
 import { respondJSON } from "../utils/response"
 import redis from "../redis"
+import { uploader } from "../utils/upload"
 
 const router = express.Router()
 
@@ -24,6 +25,14 @@ router.post("/", async (req, res) => {
   }
 })
 
+router.post("/upload", (req, res, next) => {
+  uploader.single("file")(req, res, function(err) {
+    if (err) {
+      Response.respondJSON(res, false, err.message)
+    }
+    Response.respondJSON(res, true, {})
+  })
+})
 router.put("/", async (req, res) => {
   let todoItem = <Todo>req.body
   // modify todo info

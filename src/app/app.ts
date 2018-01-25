@@ -49,7 +49,7 @@ app.use(express.static(path.join(rootDir(), "public")))
 app.use("/", function(req, res, next) {
   if (req.session.pageCount) req.session.pageCount++
   else req.session.pageCount = 1
-  res.render("index", { title: JSON.stringify(req.session) })
+  next()
 })
 app.use("/api", routes.api)
 app.use("/debug", routes.debug)
