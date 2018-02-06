@@ -1,0 +1,60 @@
+2018-02-03 11:47:55 - error: error when read redis , error info is :% { ReplyError: WRONGTYPE Operation against a key holding the wrong kind of value
+    at JavascriptRedisParser.returnError (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_ioredis@3.2.2@ioredis/lib/redis/parser.js:24:25)
+    at JavascriptRedisParser.execute (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_redis-parser@2.6.0@redis-parser/lib/parser.js:572:12)
+    at Socket.<anonymous> (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_ioredis@3.2.2@ioredis/lib/redis/event_handler.js:107:22)
+    at emitOne (events.js:115:13)
+    at Socket.emit (events.js:210:7)
+    at addChunk (_stream_readable.js:266:12)
+    at readableAddChunk (_stream_readable.js:253:11)
+    at Socket.Readable.push (_stream_readable.js:211:10)
+    at TCP.onread (net.js:585:20)
+From previous event:
+    at Promise.longStackTracesCaptureStackTrace [as _captureStackTrace] (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_bluebird@3.5.1@bluebird/js/release/debuggability.js:400:19)
+    at Promise._resolveFromExecutor (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_bluebird@3.5.1@bluebird/js/release/promise.js:480:10)
+    at new Promise (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_bluebird@3.5.1@bluebird/js/release/promise.js:79:10)
+    at Command.initPromise (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_ioredis@3.2.2@ioredis/lib/command.js:63:18)
+    at new Command (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_ioredis@3.2.2@ioredis/lib/command.js:51:8)
+    at Redis.get (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_ioredis@3.2.2@ioredis/lib/commander.js:131:29)
+    at RedisController.<anonymous> (/Users/vincent/Documents/VincentDirectory/ts_node/dist/redis/index.js:37:48)
+    at Generator.next (<anonymous>)
+    at /Users/vincent/Documents/VincentDirectory/ts_node/dist/redis/index.js:7:71
+    at Promise (<anonymous>)
+    at __awaiter (/Users/vincent/Documents/VincentDirectory/ts_node/dist/redis/index.js:3:12)
+    at RedisController.get (/Users/vincent/Documents/VincentDirectory/ts_node/dist/redis/index.js:34:16)
+    at Function.<anonymous> (/Users/vincent/Documents/VincentDirectory/ts_node/dist/controllers/teachersController.js:27:41)
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/vincent/Documents/VincentDirectory/ts_node/dist/controllers/teachersController.js:4:58)
+    at <anonymous>
+  name: 'ReplyError',
+  message: 'WRONGTYPE Operation against a key holding the wrong kind of value',
+  command: { name: 'get', args: [ 'node_server:teachers:lockedIds' ] } } lockedIds
+2018-02-03 11:52:09 - error: error when read redis , error info is :% { ReplyError: WRONGTYPE Operation against a key holding the wrong kind of value
+    at JavascriptRedisParser.returnError (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_ioredis@3.2.2@ioredis/lib/redis/parser.js:24:25)
+    at JavascriptRedisParser.execute (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_redis-parser@2.6.0@redis-parser/lib/parser.js:572:12)
+    at Socket.<anonymous> (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_ioredis@3.2.2@ioredis/lib/redis/event_handler.js:107:22)
+    at emitOne (events.js:115:13)
+    at Socket.emit (events.js:210:7)
+    at addChunk (_stream_readable.js:266:12)
+    at readableAddChunk (_stream_readable.js:253:11)
+    at Socket.Readable.push (_stream_readable.js:211:10)
+    at TCP.onread (net.js:585:20)
+From previous event:
+    at Promise.longStackTracesCaptureStackTrace [as _captureStackTrace] (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_bluebird@3.5.1@bluebird/js/release/debuggability.js:400:19)
+    at Promise._resolveFromExecutor (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_bluebird@3.5.1@bluebird/js/release/promise.js:480:10)
+    at new Promise (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_bluebird@3.5.1@bluebird/js/release/promise.js:79:10)
+    at Command.initPromise (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_ioredis@3.2.2@ioredis/lib/command.js:63:18)
+    at new Command (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_ioredis@3.2.2@ioredis/lib/command.js:51:8)
+    at Redis.get (/Users/vincent/Documents/VincentDirectory/ts_node/node_modules/_ioredis@3.2.2@ioredis/lib/commander.js:131:29)
+    at RedisController.<anonymous> (/Users/vincent/Documents/VincentDirectory/ts_node/dist/redis/index.js:37:48)
+    at Generator.next (<anonymous>)
+    at /Users/vincent/Documents/VincentDirectory/ts_node/dist/redis/index.js:7:71
+    at Promise (<anonymous>)
+    at __awaiter (/Users/vincent/Documents/VincentDirectory/ts_node/dist/redis/index.js:3:12)
+    at RedisController.get (/Users/vincent/Documents/VincentDirectory/ts_node/dist/redis/index.js:34:16)
+    at Function.<anonymous> (/Users/vincent/Documents/VincentDirectory/ts_node/dist/controllers/teachersController.js:27:47)
+    at Generator.next (<anonymous>)
+    at fulfilled (/Users/vincent/Documents/VincentDirectory/ts_node/dist/controllers/teachersController.js:4:58)
+    at <anonymous>
+  name: 'ReplyError',
+  message: 'WRONGTYPE Operation against a key holding the wrong kind of value',
+  command: { name: 'get', args: [ 'node_server:teachers:lockedIds' ] } } lockedIds

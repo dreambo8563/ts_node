@@ -1,5 +1,5 @@
 import * as Redis from "ioredis"
-import { config } from "./config"
+import { Config } from "../config"
 import Logger from "../utils/logger"
 
 export class RedisController {
@@ -85,7 +85,6 @@ export class RedisController {
         key[index] = `${this.keyTitle}:${module}:${current}`
       })
       const value = await this.redis.mget(...key)
-      console.log(value, "value")
       if (!value || !Array.isArray(value)) {
         return
       }
@@ -115,6 +114,39 @@ export class RedisController {
       Logger.error("error when delete redis , error info is :%", e, key)
     }
   }
+
+  async addSet(module: string, key: string, values: string[]) {
+    try {
+      const keyPath = `${this.keyTitle}:${module}:${key}`
+      return this.redis.sadd(keyPath, values)
+    } catch (e) {
+      Logger.error("error when addSet redis , error info is :%", e, values)
+    }
+  }
+  async getSetMembers(module: string, key: string) {
+    try {
+      const keyPath = `${this.keyTitle}:${module}:${key}`
+      return this.redis.smembers(keyPath)
+    } catch (e) {
+      Logger.error(
+        "error when getSetMembers redis , error info is :%",
+        e,
+        `${this.keyTitle}:${module}:${key}`
+      )
+    }
+  }
+  async exist(module: string, key: string) {
+    try {
+      const keyPath = `${this.keyTitle}:${module}:${key}`
+      return this.redis.exists(keyPath)
+    } catch (e) {
+      Logger.error(
+        "error when exist redis , error info is :%",
+        e,
+        `${this.keyTitle}:${module}:${key}`
+      )
+    }
+  }
 }
-export const redis = new Redis(config.port, config.host)
+export const redis = new Redis(Config().redis.port, Config().redis.host)
 export default new RedisController(redis, "node_server")

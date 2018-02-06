@@ -1,11 +1,11 @@
 import * as Knex from "knex"
-import { config } from "./config"
+import { Config } from "../config/"
 
 let db: Knex
 export default class DB {
-  static getInstance() {
+  static getInstance(dbName = "data") {
     if (!db) {
-      db = Knex(config)
+      db = Knex({ ...Config().db, database: dbName })
     }
     return db
   }

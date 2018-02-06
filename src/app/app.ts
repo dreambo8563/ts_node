@@ -10,7 +10,7 @@ import routes from "../routes"
 import * as session from "express-session"
 import * as connectRedis from "connect-redis"
 import * as Redis from "ioredis"
-import { config as redisConfig } from "../redis/config"
+import { Config } from "../config"
 import { redis } from "../redis"
 
 // create the client because of the issue
@@ -29,14 +29,14 @@ app.use(favicon(path.join(rootDir(), "public", "favicon.png")))
 app.use(logger("dev"))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(cookieParser(redisConfig.secret))
+app.use(cookieParser(Config().session.secret))
 app.use(
   session({
-    name: redisConfig.name,
-    secret: redisConfig.secret,
+    name: Config().session.name,
+    secret: Config().session.secret,
     saveUninitialized: true,
     resave: true,
-    cookie: redisConfig.cookie,
+    cookie: Config().session.cookie,
     // @ts-ignore
     store: new RedisStore({
       client: redis
@@ -46,15 +46,17 @@ app.use(
 app.use(express.static(path.join(rootDir(), "public")))
 
 // router bind
-app.use("/", function(req, res, next) {
-  if (req.session.pageCount) req.session.pageCount++
-  else req.session.pageCount = 1
-  next()
-})
-app.use("/api", routes.api)
-app.use("/debug", routes.debug)
-app.use("/tencent", routes.tencent)
-app.use("/todo", routes.todo)
+// app.use("/", function(req, res, next) {
+//   if (req.session.pageCount) req.session.pageCount++
+//   else req.session.pageCount = 1
+//   res.render("index", { title: JSON.stringify(req.cookies) })
+// })
+// app.use("/api", routes.api)
+// app.use("/debug", routes.debug)
+// app.use("/tencent", routes.tencent)
+// app.use("/todo", routes.todo)
+app.use("/api/courses", routes.courses)
+app.use("/api/teachers", routes.teachers)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
